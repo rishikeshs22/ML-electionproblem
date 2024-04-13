@@ -125,3 +125,24 @@ plt.ylabel('True')
 plt.savefig('confusion_matrix_gb.png')
 plt.show()
 
+# wealth check
+
+    def convert_to_rupees(wealth):
+    wealth = wealth.replace(' Crore+', 'e7').replace(' Lac+', 'e5').replace(' Crore', 'e7').replace(' Lac', 'e5').replace('Thou+', 'e3').replace(' Thousand', 'e3')
+    wealth_parts = wealth.split()
+    if len(wealth_parts) == 2:
+        wealth = wealth_parts[0] + wealth_parts[1]
+    return float(wealth)
+df['Total Assets'] = df['Total Assets'].apply(convert_to_rupees)
+wealthy_candidates = df[df['Total Assets'] > 1e7]  # 1 crore = 1e7 rupees
+party_counts = df['Party'].value_counts()
+wealthy_counts = wealthy_candidates['Party'].value_counts()
+percentage_wealthy_candidates = (wealthy_counts / party_counts) * 100
+percentage_wealthy_candidates.plot(kind='bar', figsize=(10, 6))
+plt.title('Percentage of Candidates with More Than One Crore Rupees in Total Assets by Party')
+plt.ylabel('Percentage')
+plt.xlabel('Party')
+plt.ylim(0, 100)
+plt.xticks(rotation=45)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
