@@ -85,7 +85,7 @@ test_predictions = label_encoder.inverse_transform(test_predictions)
 submission_df = pd.DataFrame({'ID': df_test['ID'], 'Education': test_predictions})
 submission_df.to_csv('final3.csv', index=False)
 
-# Generate and save the plots
+
 
 # Feature Importance Plot for Random Forest
 plt.figure(figsize=(10, 6))
@@ -124,34 +124,4 @@ plt.xlabel('Predicted')
 plt.ylabel('True')
 plt.savefig('confusion_matrix_gb.png')
 plt.show()
-
-# ROC Curve for Random Forest (if applicable)
-if hasattr(best_randomforest_model, "predict_proba"):
-    plt.figure(figsize=(8, 6))
-    y_proba_rf = best_randomforest_model.predict_proba(X_val)
-    fpr_rf, tpr_rf, thresholds_rf = roc_curve(Y_val, y_proba_rf[:, 1])
-    auc_rf = auc(fpr_rf, tpr_rf)
-    plt.plot(fpr_rf, tpr_rf, label='ROC curve (area = {:.2f})'.format(auc_rf))
-    plt.plot([0, 1], [0, 1], 'k--')
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('ROC Curve - Random Forest')
-    plt.legend(loc='lower right')
-    plt.savefig('roc_curve_rf.png')
-    plt.show()
-
-# ROC Curve for Gradient Boosting (if applicable)
-if hasattr(best_gradientboosting_model, "predict_proba"):
-    plt.figure(figsize=(8, 6))
-    y_proba_gb = best_gradientboosting_model.predict_proba(X_val)
-    fpr_gb, tpr_gb, thresholds_gb = roc_curve(Y_val, y_proba_gb[:, 1])
-    auc_gb = auc(fpr_gb, tpr_gb)
-    plt.plot(fpr_gb, tpr_gb, label='ROC curve (area = {:.2f})'.format(auc_gb))
-    plt.plot([0, 1], [0, 1], 'k--')
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('ROC Curve - Gradient Boosting')
-    plt.legend(loc='lower right')
-    plt.savefig('roc_curve_gb.png')
-    plt.show()
 
